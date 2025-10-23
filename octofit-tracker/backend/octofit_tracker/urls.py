@@ -19,7 +19,10 @@ def api_root(request, format=None):
     if codespace_name:
         base_url = f"https://{codespace_name}-8000.app.github.dev/api/"
     else:
+        # Use request.build_absolute_uri to get the full URL for /api/
         base_url = request.build_absolute_uri('/api/')
+        if not base_url.endswith('/api/'):
+            base_url = base_url.rstrip('/') + '/api/'
     return Response({
         'teams': base_url + 'teams/',
         'users': base_url + 'users/',
